@@ -66,8 +66,9 @@ extension TMBPopularMoviesViewController: UICollectionViewDataSource {
 extension TMBPopularMoviesViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if (viewModel.viewModels[indexPath.row].image == ImageAssets.placeholder) {
-            presenter.updatePosterImageForPopularMovie(at: indexPath.row, in: self)
+        if viewModel.viewModels[indexPath.row].image == ImageAssets.placeholder {
+            let imageWidth = (cell as! TMBMovieCollectionViewCell).imageView.bounds.width
+            presenter.updatePosterImageForPopularMovie(at: indexPath.row, with: imageWidth, in: self)
         }
     }
     

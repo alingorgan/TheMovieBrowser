@@ -12,7 +12,7 @@ protocol TMBURLCreating {
     
     func makePopularMoviesURL(for page: Int) -> URL
     
-    func makeMoviePosterURL(for path: String) -> URL
+    func makeMoviePosterURL(with width: Int, for path: String) -> URL
 }
 
 final class TMBURLFactory: TMBURLCreating {
@@ -28,11 +28,11 @@ final class TMBURLFactory: TMBURLCreating {
         return URL(string: formattedURLString)!
     }
     
-    func makeMoviePosterURL(for path: String) -> URL {
+    func makeMoviePosterURL(with width: Int, for path: String) -> URL {
         
         let formattedURLString = String(
             format: UnformattedURLs.PosterImagePath,
-            path)
+            width, path)
         
         return URL(string: formattedURLString)!
     }
@@ -40,6 +40,6 @@ final class TMBURLFactory: TMBURLCreating {
 
 struct UnformattedURLs {
     static let PopularMovies = "https://api.themoviedb.org/3/movie/popular?api_key=%@&page=%ld"
-    static let PosterImagePath = "http://image.tmdb.org/t/p/w500%@"
+    static let PosterImagePath = "http://image.tmdb.org/t/p/w%ld%@"
 }
 

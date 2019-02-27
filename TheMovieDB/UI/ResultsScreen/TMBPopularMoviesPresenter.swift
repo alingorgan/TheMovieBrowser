@@ -14,7 +14,7 @@ protocol TMBPopularMoviesPresenting {
     
     func didScrollToBottom(in view: TMBPopularMoviesView)
     
-    func updatePosterImageForPopularMovie(at index: Int, in view: TMBPopularMoviesView)
+    func updatePosterImageForPopularMovie(at index: Int, with width: CGFloat, in view: TMBPopularMoviesView)
     
     func updateFavoriteStateForPopularMovie(at index: Int, in view: TMBPopularMoviesView)
     
@@ -51,10 +51,10 @@ final class TMBPopularMoviesPresenter: TMBPopularMoviesPresenting {
         }
     }
     
-    func updatePosterImageForPopularMovie(at index: Int, in view: TMBPopularMoviesView) {
+    func updatePosterImageForPopularMovie(at index: Int, with width: CGFloat, in view: TMBPopularMoviesView) {
         let sourceModel = view.viewModel.viewModels[index]
         
-        interactor.loadPosterImageForMovie(at: index) { image in
+        interactor.loadPosterImageForMovie(at: index, with: width) { image in
             
             let updatedModel = TMBPopularMovieViewModel(
                 image: image,

@@ -20,6 +20,7 @@ final class TMBMovieDetailsInteractor: TMBMovieDetailsInteracting {
     private let resultIndex: Int
     private let persistentStore: TMBPersistentStore
     private let urlFactory: TMBURLCreating
+    private let imageWidth = 500
     
     init(resultIndex: Int, persistentStore: TMBPersistentStore, urlFactory: TMBURLCreating) {
         self.resultIndex = resultIndex
@@ -40,7 +41,7 @@ final class TMBMovieDetailsInteractor: TMBMovieDetailsInteracting {
             guard let result = (try? backgroundContext.fetch(fetchRequest))?.first else { dispatchResult(title: "", image: nil); return }
             
             let resultTitle = result.title
-            let imageURL = self.urlFactory.makeMoviePosterURL(for: result.imagePath)
+            let imageURL = self.urlFactory.makeMoviePosterURL(with: self.imageWidth, for: result.imagePath)
             
             URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, _, error) in
                 

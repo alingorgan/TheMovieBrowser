@@ -15,7 +15,7 @@ protocol TMBPopularMoviesInteracting {
     
     func fetchPopularMovies(completion: @escaping ([TMBPopularMovieModel]) -> ())
     
-    func loadPosterImageForMovie(at index: Int, completion: @escaping (UIImage) -> ())
+    func loadPosterImageForMovie(at index: Int, with width: CGFloat, completion: @escaping (UIImage) -> ())
     
     func toggleFavoriteMovieState(for favoriteMovieIndex: Int) -> TMBPopularMovieModel
     
@@ -139,11 +139,15 @@ extension TMBPopularMoviesInteractor: TMBPopularMoviesInteracting {
         }.resume()
     }
     
-    func loadPosterImageForMovie(at index: Int, completion: @escaping (UIImage) -> ()) {
+    func loadPosterImageForMovie(at index: Int, with width: CGFloat, completion: @escaping (UIImage) -> ()) {
         
         guard let result = fetchResultsController.fetchedObjects?[index] else { return }
         
-        let posterURL = urlFactory.makeMoviePosterURL(for: result.imagePath)
+        let increment = 100
+        let minimumWidth = 200
+        let roundedWidth = max(increment * Int((width / CGFloat(increment)).rounded()), minimumWidth) // IMDB image proxy server accepts widths greater than 200px and in increments of 100 only
+        
+        let posterURL = urlFactory.makeMoviePosterURL(with: roundedWidth, for: result.imagePath)
         
         guard !loadingURLs.contains(posterURL.absoluteString) else { return }
         
